@@ -13,8 +13,8 @@ public class AuctionSniperEndToEndTest {
         auction.startSellingItem();
         application.startBiddingIn(auction); // 메시지 전송 XMPP 및 UI Open
         auction.hasReceivedJoinRequestFromSniper(); // XMPP로 부터 메시지 수신여부를 확인한다
-        auction.announceClosed();
-        application.showsSniperHasLostAuction();
+        auction.announceClosed(); // 종료메시지 전송
+        application.showsSniperHasLostAuction(); //화면에 Lost 출력여부를 확인한다
     }
 
     @After
