@@ -15,7 +15,7 @@ import java.awt.event.WindowEvent;
 /**
  * Created by a1000107 on 2022/03/04.
  */
-public class Main implements AuctionEventListener{
+public class Main implements SniperListener{
     private static final int ARG_HOSTNAME = 0;
     private static final int ARG_USERNAME = 1;
     private static final int ARG_PASSWORD = 2;
@@ -76,7 +76,7 @@ public class Main implements AuctionEventListener{
 //                        });
 //                    }
 //                }
-                new AuctionMessageTranslator(this)
+                new AuctionMessageTranslator(new AuctionSniper(this))
         );
         this.notToBeGCd = chat;
 
@@ -103,12 +103,20 @@ public class Main implements AuctionEventListener{
         });
     }
 
-    public void auctionClosed() {
+//    public void auctionClosed() {
+//
+//    }
+//
+//    public void currentPrice(int price, int increment) {
+//
+//    }
 
-    }
-
-    public void currentPrice(int price, int increment) {
-
+    public void sniperLost() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ui.showStatus(MainWindow.STATUS_LOST);
+            }
+        });
     }
 
     public class MainWindow extends JFrame{
