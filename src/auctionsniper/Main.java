@@ -124,7 +124,11 @@ public class Main implements SniperListener{
     }
 
     public void sniperBidding() {
-
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ui.showStatus(MainWindow.STATUS_BIDDING);
+            }
+        });
     }
 
     public class MainWindow extends JFrame{

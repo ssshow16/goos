@@ -10,6 +10,7 @@ public class AuctionSniperEndToEndTest {
 
     @Test
     public void sniperMakesAHigherBidButLoses() throws Exception {
+
         auction.startSellingItem();
         application.startBiddingIn(auction); // 메시지 전송 XMPP 및 UI Open
         auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID); // XMPP로 부터 메시지 수신여부를 확인한다
