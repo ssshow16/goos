@@ -41,6 +41,10 @@ public class ApplicationRunner {
         driver.showsSniperStatus(Main.MainWindow.STATUS_BIDDING);
     }
 
+    public void hasShownSniperIsWinning() {
+        driver.showsSniperStatus(Main.MainWindow.STATUS_WINNING);
+    }
+
     public void stop() {
         if (driver != null) {
             driver.dispose();

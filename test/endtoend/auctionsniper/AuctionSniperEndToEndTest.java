@@ -18,7 +18,10 @@ public class AuctionSniperEndToEndTest {
         auction.reportPrice(1000,98,"other bidder"); // 가격:1000, 증액 98, 'other bidder' 이름으로 메시지 전송
         application.hasShownSniperIsBidding(); // acution으로 부터 생긴 메시지 노출 확인
 
-        auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);//
+        auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.reportPrice(1000,98, ApplicationRunner.SNIPER_XMPP_ID);
+        application.hasShownSniperIsWinning();
 
         auction.announceClosed(); // 종료메시지 전송
         application.showsSniperHasLostAuction(); //화면에 Lost 출력여부를 확인한다
