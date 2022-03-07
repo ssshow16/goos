@@ -107,6 +107,10 @@ public class Main implements AuctionEventListener{
 
     }
 
+    public void currentPrice(int price, int increment) {
+
+    }
+
     public class MainWindow extends JFrame{
 
         public static final String STATUS_JOINING = "Joining";
