@@ -4,18 +4,17 @@ import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.packet.Message;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by a1000107 on 2022/03/07.
- */
+@RunWith(JMock.class)
 public class AuctionMessageTranslatorTest {
     public static final Chat UNUSED_CHAT = null;
 
-    private final AuctionMessageTranslator translator =
-            new AuctionMessageTranslator();
+    private final AuctionMessageTranslator translator = new AuctionMessageTranslator();
     //jmock
     private final Mockery context = new Mockery();
     private final AuctionEventListener listener =  context.mock(AuctionEventListener.class);
