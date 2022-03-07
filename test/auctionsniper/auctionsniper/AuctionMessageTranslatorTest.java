@@ -13,11 +13,11 @@ import static org.junit.Assert.*;
 @RunWith(JMock.class)
 public class AuctionMessageTranslatorTest {
     public static final Chat UNUSED_CHAT = null;
-
-    private final AuctionMessageTranslator translator = new AuctionMessageTranslator();
     //jmock
     private final Mockery context = new Mockery();
     private final AuctionEventListener listener =  context.mock(AuctionEventListener.class);
+
+    private final AuctionMessageTranslator translator = new AuctionMessageTranslator(listener);
 
     @Test
     public void notifiesAuctionClosedWhenCloseMessageReceived() {
