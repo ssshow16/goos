@@ -16,7 +16,7 @@ import java.awt.event.WindowEvent;
 /**
  * Created by a1000107 on 2022/03/04.
  */
-public class Main implements SniperListener{
+public class Main {
     private static final int ARG_HOSTNAME = 0;
     private static final int ARG_USERNAME = 1;
     private static final int ARG_PASSWORD = 2;
@@ -78,7 +78,7 @@ public class Main implements SniperListener{
 
         Auction auction = new XMPPAuction(chat);
 
-        chat.addMessageListener(new AuctionMessageTranslator(new AuctionSniper(auction, this)));
+        chat.addMessageListener(new AuctionMessageTranslator(new AuctionSniper(auction, new SniperStateDisplayer())));
         auction.join();
     }
 
@@ -102,28 +102,27 @@ public class Main implements SniperListener{
         });
     }
 
-//    public void auctionClosed() {
-//
-//    }
-//
-//    public void currentPrice(int price, int increment) {
-//
-//    }
+    public class SniperStateDisplayer implements SniperListener{
+        public void sniperLost() {
+            showStatus(MainWindow.STATUS_LOST);
+        }
 
-    public void sniperLost() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ui.showStatus(MainWindow.STATUS_LOST);
-            }
-        });
-    }
+        public void sniperBidding(){
+            showStatus(MainWindow.STATUS_BIDDING);
+        }
 
-    public void sniperBidding() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ui.showStatus(MainWindow.STATUS_BIDDING);
-            }
-        });
+        public void sniperWinning(){
+            showStatus(MainWindow.STATUS_WINNING);
+        }
+
+        private void showStatus(final String status){
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    ui.showStatus(status);
+                }
+            });
+        }
+
     }
 
     public class MainWindow extends JFrame{
@@ -131,6 +130,7 @@ public class Main implements SniperListener{
         public static final String STATUS_JOINING = "Joining";
         public static final String STATUS_LOST = "Lost";
         public static final String STATUS_BIDDING = "Bidding";
+        public static final String STATUS_WINNING = "Winning";
 
         public static final String SNIPER_STATUS_NAME = "sniper status";
 
