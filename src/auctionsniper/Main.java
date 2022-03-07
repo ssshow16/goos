@@ -9,6 +9,8 @@ import org.jivesoftware.smack.packet.Message;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by a1000107 on 2022/03/04.
@@ -26,6 +28,8 @@ public class Main {
 
 
     public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
+    public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
+    public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
 
     private MainWindow ui;
 
@@ -60,6 +64,7 @@ public class Main {
     }
 
     private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException{
+//        disconnectWhenUICloses(connection);
         final Chat chat = connection.getChatManager().createChat(
                 auctionId(itemId, connection),
                 new MessageListener() {
@@ -73,7 +78,8 @@ public class Main {
                 }
         );
         this.notToBeGCd = chat;
-        chat.sendMessage(new Message());
+
+        chat.sendMessage(JOIN_COMMAND_FORMAT);
     }
 
     private static XMPPConnection connection(String hostname, String username, String password) throws XMPPException{
@@ -87,12 +93,23 @@ public class Main {
         return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
     }
 
+    private void disconnectWhenUICloses(final XMPPConnection connection) {
+        ui.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                connection.disconnect();
+            }
+        });
+    }
+
     public class MainWindow extends JFrame{
 
         public static final String STATUS_JOINING = "Joining";
         public static final String STATUS_LOST = "Lost";
+        public static final String STATUS_BIDDING = "Bidding";
 
         public static final String SNIPER_STATUS_NAME = "sniper status";
+
         private final JLabel sniperStatus = createLabel(STATUS_JOINING);
 
 

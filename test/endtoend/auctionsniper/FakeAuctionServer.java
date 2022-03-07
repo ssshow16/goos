@@ -47,8 +47,26 @@ public class FakeAuctionServer {
         return this.itemId;
     }
 
-    public void hasReceivedJoinRequestFromSniper() throws InterruptedException {
-        messageListener.receivesAMessage();
+//    public void hasReceivedJoinRequestFromSniper() throws InterruptedException {
+//        messageListener.receivesAMessage();
+//    }
+
+    public void hasReceivedJoinRequestFrom(String sniperId)
+            throws InterruptedException {
+        receivesAMessageMatching(sniperId, equalTo(Main.JOIN_COMMAND_FORMAT));
+    }
+
+
+    public void hasReceivedBid(int bid, String sniperId) throws InterruptedException{
+        assertThat(currentChat.getParticipant(), equalTo(sniperId));//서버로 부터 메시지를 대기해야하기에 식별자를 먼저 검사함.
+        receivesAMessageMatching(sniperId, equalTo(format(Main.BID_COMMAND_FORMAT, bid)));
+    }
+
+    private void receivesAMessageMatching(String sniperId,
+                                          Matcher<? super String> messageMatcher)
+            throws InterruptedException {
+        messageListener.receivesAMessage(messageMatcher);
+        assertThat(currentChat.getParticipant(), equalTo(sniperId));
     }
 
     public void announceClosed() throws XMPPException {
@@ -59,6 +77,13 @@ public class FakeAuctionServer {
         connection.disconnect();
     }
 
+    public void reportPrice(int price, int increment, String bidder) throws XMPPException{
+        currentChat.sendMessage(
+                String.format("SOLVerion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;", price, increment, bidder)
+        );
+    }
+
+
     public class SingleMessageListener implements MessageListener {
         private final ArrayBlockingQueue<Message> messages =
                 new ArrayBlockingQueue<Message>(1);
@@ -68,8 +93,11 @@ public class FakeAuctionServer {
         }
 
         @SuppressWarnings("unchecked")
-        public void receivesAMessage() throws InterruptedException {
-            assertThat("Message", messages.poll(5, TimeUnit.SECONDS), is(notNullValue()));
+        public void receivesAMessage(Matcher<? super String> messageMatcher) throws InterruptedException {
+            final Message message = messages.poll(5, TimeUnit.SECONDS);
+            assertThat("Message", message, is(notNullValue()));
+            assertThat(message.getBody(), messageMatcher);
+//            assertThat("Message", messages.poll(5, TimeUnit.SECONDS), is(notNullValue()));
         }
     }
 }
