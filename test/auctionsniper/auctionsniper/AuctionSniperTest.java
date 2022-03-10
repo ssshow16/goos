@@ -12,6 +12,7 @@ import static auctionsniper.AuctionEventListener.PriceSource.*;
 
 @RunWith(JMock.class)
 public class AuctionSniperTest {
+
     private final Mockery context = new Mockery();
     private final SniperListener sniperListener = context.mock(SniperListener.class);
     private final Auction auction = context.mock(Auction.class);
