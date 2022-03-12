@@ -2,10 +2,8 @@ package auctionsniper;
 
 import auctionsniper.xmpp.XMPPAuction;
 import org.jivesoftware.smack.Chat;
-import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -36,12 +34,12 @@ public class Main {
 
     private Chat notToBeGCd;
 
-    public Main() throws Exception{
+    public Main() throws Exception {
         startUserInterface();
 
     }
 
-    private void startUserInterface() throws Exception{
+    private void startUserInterface() throws Exception {
         SwingUtilities.invokeAndWait(
                 new Runnable() {
                     public void run() {
@@ -64,7 +62,7 @@ public class Main {
         );
     }
 
-    private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException{
+    private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException {
 
 
         disconnectWhenUICloses(connection);
@@ -78,18 +76,18 @@ public class Main {
 
         Auction auction = new XMPPAuction(chat);
 
-        chat.addMessageListener(new AuctionMessageTranslator(new AuctionSniper(auction, new SniperStateDisplayer())));
+        chat.addMessageListener(new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(auction, new SniperStateDisplayer())));
         auction.join();
     }
 
-    private static XMPPConnection connection(String hostname, String username, String password) throws XMPPException{
+    private static XMPPConnection connection(String hostname, String username, String password) throws XMPPException {
         XMPPConnection connection = new XMPPConnection(hostname);
         connection.connect();
         connection.login(username, password, AUCTION_RESOURCE);
         return connection;
     }
 
-    private static String auctionId(String itemId, XMPPConnection connection){
+    private static String auctionId(String itemId, XMPPConnection connection) {
         return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
     }
 
@@ -102,20 +100,20 @@ public class Main {
         });
     }
 
-    public class SniperStateDisplayer implements SniperListener{
+    public class SniperStateDisplayer implements SniperListener {
         public void sniperLost() {
             showStatus(MainWindow.STATUS_LOST);
         }
 
-        public void sniperBidding(){
+        public void sniperBidding() {
             showStatus(MainWindow.STATUS_BIDDING);
         }
 
-        public void sniperWinning(){
+        public void sniperWinning() {
             showStatus(MainWindow.STATUS_WINNING);
         }
 
-        private void showStatus(final String status){
+        private void showStatus(final String status) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     ui.showStatus(status);
@@ -125,7 +123,7 @@ public class Main {
 
     }
 
-    public class MainWindow extends JFrame{
+    public class MainWindow extends JFrame {
 
         public static final String STATUS_JOINING = "Joining";
         public static final String STATUS_LOST = "Lost";
@@ -137,7 +135,7 @@ public class Main {
         private final JLabel sniperStatus = createLabel(STATUS_JOINING);
 
 
-        public MainWindow(){
+        public MainWindow() {
             super("Auction Sniper");
             setName(MAIN_WINDOW_NAME);
             add(sniperStatus);
@@ -146,14 +144,14 @@ public class Main {
             setVisible(true);
         }
 
-        private JLabel createLabel(String initialText){
+        private JLabel createLabel(String initialText) {
             JLabel result = new JLabel(initialText);
             result.setName(SNIPER_STATUS_NAME);
             result.setBorder(new LineBorder(Color.BLACK));
             return result;
         }
 
-        public void showStatus(String status){
+        public void showStatus(String status) {
             sniperStatus.setText(status);
         }
     }

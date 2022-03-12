@@ -7,14 +7,19 @@ import org.jivesoftware.smack.packet.Message;
 import java.util.HashMap;
 import java.util.Map;
 
+import static auctionsniper.AuctionEventListener.PriceSource;
+import static auctionsniper.AuctionEventListener.PriceSource.FromOtherBidder;
+import static auctionsniper.AuctionEventListener.PriceSource.FromSniper;
+
 /**
  * Created by a1000107 on 2022/03/07.
  */
-public class AuctionMessageTranslator implements MessageListener{
-
+public class AuctionMessageTranslator implements MessageListener {
+    private final String sniperId;
     private final AuctionEventListener listener;
 
-    public AuctionMessageTranslator(AuctionEventListener listener){
+    public AuctionMessageTranslator(String sniperId, AuctionEventListener listener) {
+        this.sniperId = sniperId;
         this.listener = listener;
     }
 
@@ -23,12 +28,13 @@ public class AuctionMessageTranslator implements MessageListener{
         AuctionEvent event = AuctionEvent.from(message.getBody());
 
         String type = event.type();
-        if("CLOSE".equals(type)){
+        if ("CLOSE".equals(type)) {
             listener.auctionClosed();
-        }else if("PRICE".equals(type)){
+        } else if ("PRICE".equals(type)) {
             listener.currentPrice(
                     event.currentPrice(),
-                    event.increment());
+                    event.increment(),
+                    event.isFrom(sniperId));
         }
     }
 
@@ -39,19 +45,19 @@ public class AuctionMessageTranslator implements MessageListener{
             return get("Event");
         }
 
-        public int currentPrice()  {
+        public int currentPrice() {
             return getInt("CurrentPrice");
         }
 
-        public int increment()  {
+        public int increment() {
             return getInt("Increment");
         }
 
-        private int getInt(String fieldName)  {
+        private int getInt(String fieldName) {
             return Integer.parseInt(get(fieldName));
         }
 
-        private String get(String fieldName)  {
+        private String get(String fieldName) {
             return fields.get(fieldName);
         }
 
@@ -70,6 +76,14 @@ public class AuctionMessageTranslator implements MessageListener{
 
         static String[] fieldsIn(String messageBody) {
             return messageBody.split(";");
+        }
+
+        public PriceSource isFrom(String sniperId) {
+            return sniperId.equals(bidder()) ? FromSniper : FromOtherBidder;
+        }
+
+        private String bidder() {
+            return get("Bidder");
         }
     }
 }
