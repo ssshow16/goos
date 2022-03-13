@@ -113,6 +113,10 @@ public class Main {
             showStatus(MainWindow.STATUS_WINNING);
         }
 
+        public void sniperWon() {
+            showStatus(MainWindow.STATUS_WON);
+        }
+
         private void showStatus(final String status) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
@@ -129,6 +133,7 @@ public class Main {
         public static final String STATUS_LOST = "Lost";
         public static final String STATUS_BIDDING = "Bidding";
         public static final String STATUS_WINNING = "Winning";
+        public static final String STATUS_WON = "Won";
 
         public static final String SNIPER_STATUS_NAME = "sniper status";
 
