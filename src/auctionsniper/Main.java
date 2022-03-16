@@ -1,6 +1,7 @@
 package auctionsniper;
 
 import auctionsniper.ui.MainWindow;
+import auctionsniper.ui.MainWindow.SnipersTableModel;
 import auctionsniper.xmpp.XMPPAuction;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPConnection;
@@ -13,7 +14,7 @@ import java.awt.event.WindowEvent;
 /**
  * Created by a1000107 on 2022/03/04.
  */
-public class Main{
+public class Main {
 
     private static final int ARG_HOSTNAME = 0;
     private static final int ARG_USERNAME = 1;
@@ -47,6 +48,7 @@ public class Main{
                 connection.getServiceName());
     }
 
+    private final SnipersTableModel snipers = new SnipersTableModel();
     private MainWindow ui;
 
     @SuppressWarnings("unused")
@@ -59,7 +61,7 @@ public class Main{
     private void startUserInterface() throws Exception {
         SwingUtilities.invokeAndWait(new Runnable() {
             public void run() {
-                ui = new MainWindow();
+                ui = new MainWindow(snipers);
             }
         });
     }
@@ -75,7 +77,7 @@ public class Main{
         chat.addMessageListener(
                 new AuctionMessageTranslator(
                         connection.getUser(),
-                        new AuctionSniper(auction, new SniperStateDisplayer(), itemId)));
+                        new AuctionSniper(auction, new SwingThreadSniperListener(snipers), itemId)));
 
         auction.join();
     }
@@ -89,12 +91,18 @@ public class Main{
         });
     }
 
-    public class SniperStateDisplayer implements SniperListener {
+    public class SwingThreadSniperListener implements SniperListener {
 
-        public void sniperStateChanged(final SniperSnapshot state) {
+        private final SniperListener sniperListener;
+
+        public SwingThreadSniperListener(SniperListener sniperListener) {
+            this.sniperListener = sniperListener;
+        }
+
+        public void sniperStateChanged(final SniperSnapshot snapshot) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    ui.sniperStatusChanged(state);
+                    sniperListener.sniperStateChanged(snapshot);
                 }
             });
         }
