@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 
 import static auctionsniper.Main.STATUS_JOINING;
+import static auctionsniper.SniperState.BIDDING;
 
 public class MainWindow extends JFrame {
 
@@ -49,7 +50,7 @@ public class MainWindow extends JFrame {
     }
 
     public static class SnipersTableModel extends AbstractTableModel {
-        private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0);
+        private final static SniperSnapshot STARTING_UP = new SniperSnapshot("", 0, 0, BIDDING);
 
         private String statusText = STATUS_JOINING;
         private SniperSnapshot sniperSnapshot = STARTING_UP;
