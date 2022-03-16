@@ -5,6 +5,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class SniperSnapshot {
+    public static SniperSnapshot joining(String itemId) {
+        return new SniperSnapshot(itemId, 0, 0, SniperState.JOINING);
+    }
+
     public final String itemId;
     public final int lastPrice;
     public final int lastBid;
@@ -17,8 +21,16 @@ public class SniperSnapshot {
         this.state = state;
     }
 
-    public static SniperSnapshot joining(String itemId) {
-        return new SniperSnapshot(itemId, 0, 0, SniperState.JOINING);
+    public SniperSnapshot bidding(int newLastPrice, int newLastBid) {
+        return new SniperSnapshot(itemId, newLastPrice, newLastBid, SniperState.BIDDING);
+    }
+
+    public SniperSnapshot winning(int newLastPrice) {
+        return new SniperSnapshot(itemId, newLastPrice, lastBid, SniperState.WINNING);
+    }
+
+    public SniperSnapshot closed() {
+        return new SniperSnapshot(itemId, lastPrice, lastBid, state.whenAuctionClosed());
     }
 
     @Override
@@ -34,13 +46,5 @@ public class SniperSnapshot {
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    public SniperSnapshot bidding(int newLastPrice, int newLastBid) {
-        return new SniperSnapshot(itemId, newLastPrice, newLastBid, SniperState.BIDDING);
-    }
-
-    public SniperSnapshot winning(int newLastPrice) {
-        return new SniperSnapshot(itemId, newLastPrice, lastBid, SniperState.WINNING);
     }
 }
