@@ -16,15 +16,31 @@ public class AuctionSniperEndToEndTest {
         auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID); // XMPP로 부터 메시지 수신여부를 확인한다
 
         auction.reportPrice(1000,98,"other bidder"); // 가격:1000, 증액 98, 'other bidder' 이름으로 메시지 전송
-        application.hasShownSniperIsBidding(); // acution으로 부터 생긴 메시지 노출 확인
+        application.hasShownSniperIsBidding(1000, 1098); // acution으로 부터 생긴 메시지 노출 확인
 
-        auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);//
-
-        auction.reportPrice(1098, 97, ApplicationRunner.SNIPER_XMPP_ID);
-        application.hasShownSniperIsBidding();
+        auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
 
         auction.announceClosed(); // 종료메시지 전송
         application.showsSniperHasLostAuction(); //화면에 Lost 출력여부를 확인한다
+    }
+
+    @Test
+    public void sniperWinsAnAuctionByBiddingHigher() throws Exception {
+        auction.startSellingItem();
+
+        application.startBiddingIn(auction);
+        auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.reportPrice(1000, 98, "other bidder");
+        application.hasShownSniperIsBidding(1000, 1098);
+
+        auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
+
+        auction.reportPrice(1098, 97, ApplicationRunner.SNIPER_XMPP_ID);
+        application.hasShownSniperIsWinning(1098);
+
+        auction.announceClosed();
+        application.showsSniperHasWonAuction(1098);
     }
 
     @After
