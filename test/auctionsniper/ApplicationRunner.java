@@ -30,7 +30,7 @@ public class ApplicationRunner {
         thread.start();
 
         driver = new AuctionSniperDriver(1000);
-        driver.showsSniperStatus(MainWindow.STATUS_JOINING);
+        driver.showsSniperStatus(Main.STATUS_JOINING);
     }
 
     public void showsSniperHasLostAuction() {
