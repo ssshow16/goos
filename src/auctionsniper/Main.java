@@ -14,8 +14,6 @@ import java.awt.event.WindowEvent;
  * Created by a1000107 on 2022/03/04.
  */
 public class Main{
-    public static final String STATUS_JOINING = "Joining";
-    public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
 
     private static final int ARG_HOSTNAME = 0;
     private static final int ARG_USERNAME = 1;
