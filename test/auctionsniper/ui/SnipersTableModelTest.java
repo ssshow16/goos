@@ -1,6 +1,7 @@
 package auctionsniper.ui;
 
 import auctionsniper.SniperSnapshot;
+import auctionsniper.ui.MainWindow.SnipersTableModel;
 import org.hamcrest.Matcher;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -22,7 +23,7 @@ import static org.junit.Assert.assertThat;
 public class SnipersTableModelTest {
     private final Mockery context = new Mockery();
     private TableModelListener listener = context.mock(TableModelListener.class);
-    private final MainWindow.SnipersTableModel model = new MainWindow.SnipersTableModel();
+    private final SnipersTableModel model = new SnipersTableModel();
 
     @Before
     public void attachModelListener() {
@@ -45,7 +46,7 @@ public class SnipersTableModelTest {
         assertColumnEquals(Column.ITEM_IDENTIFIER, "item id");
         assertColumnEquals(Column.LAST_PRICE, 555);
         assertColumnEquals(Column.LAST_BID, 666);
-        assertColumnEquals(Column.SNIPER_STATE, MainWindow.STATUS_BIDDING);
+        assertColumnEquals(Column.SNIPER_STATE, SnipersTableModel.textFor(BIDDING));
     }
 
     private void assertColumnEquals(Column column, Object expected) {
