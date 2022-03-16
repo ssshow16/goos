@@ -33,8 +33,8 @@ public class MainWindow extends JFrame {
         snipers.setStatusText(statusText);
     }
 
-    public void sniperStatusChanged(SniperSnapshot sniperSnapshot, String statusText) {
-        snipers.sniperStatusChanged(sniperSnapshot, statusText);
+    public void sniperStatusChanged(SniperSnapshot sniperSnapshot) {
+        snipers.sniperStatusChanged(sniperSnapshot);
     }
 
     private JTable makeSnipersTable() {
@@ -64,8 +64,7 @@ public class MainWindow extends JFrame {
             fireTableRowsUpdated(0, 0);
         }
 
-        public void sniperStatusChanged(SniperSnapshot newSniperSnapshot,
-                                        String newStatusText) {
+        public void sniperStatusChanged(SniperSnapshot newSniperSnapshot) {
             sniperSnapshot = newSniperSnapshot;
             statusText = STATUS_TEXT[newSniperSnapshot.state.ordinal()];
             fireTableRowsUpdated(0, 0);
