@@ -7,6 +7,7 @@ import static auctionsniper.SniperState.BIDDING;
 import static org.junit.Assert.assertEquals;
 
 public class ColumnTest {
+
     @Test
     public void retrievesValuesFromASniperSnapshot() {
         SniperSnapshot snapshot = new SniperSnapshot("item", 123, 34, BIDDING);
