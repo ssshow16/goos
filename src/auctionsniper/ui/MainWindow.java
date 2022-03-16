@@ -64,6 +64,10 @@ public class MainWindow extends JFrame {
             return Column.at(columnIndex).valueIn(sniperSnapshot);
         }
 
+        public String getColumnName(int column) {
+            return Column.at(column).name;
+        }
+
         public static String textFor(SniperState state) {
             return STATUS_TEXT[state.ordinal()];
         }
