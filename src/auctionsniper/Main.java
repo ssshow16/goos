@@ -13,7 +13,7 @@ import java.awt.event.WindowEvent;
 /**
  * Created by a1000107 on 2022/03/04.
  */
-public class Main {
+public class Main{
     public static final String STATUS_JOINING = "Joining";
     public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
 
@@ -91,7 +91,7 @@ public class Main {
 
     public class SniperStateDisplayer implements SniperListener {
 
-        public void sniperBidding() {
+        public void sniperBidding(SniperState sniperState) {
             showStatus(MainWindow.STATUS_BIDDING);
         }
 
