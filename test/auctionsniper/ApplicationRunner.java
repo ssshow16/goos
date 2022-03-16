@@ -1,6 +1,6 @@
 package auctionsniper;
 
-import java.io.IOException;
+import auctionsniper.ui.MainWindow;
 
 import static auctionsniper.FakeAuctionServer.XMPP_HOSTNAME;
 
@@ -30,15 +30,15 @@ public class ApplicationRunner {
         thread.start();
 
         driver = new AuctionSniperDriver(1000);
-        driver.showsSniperStatus(Main.MainWindow.STATUS_JOINING);
+        driver.showsSniperStatus(MainWindow.STATUS_JOINING);
     }
 
     public void showsSniperHasLostAuction() {
-        driver.showsSniperStatus(Main.MainWindow.STATUS_LOST);
+        driver.showsSniperStatus(MainWindow.STATUS_LOST);
     }
 
     public void hasShownSniperIsBidding() {
-        driver.showsSniperStatus(Main.MainWindow.STATUS_BIDDING);
+        driver.showsSniperStatus(MainWindow.STATUS_BIDDING);
     }
 
     public void stop() {
