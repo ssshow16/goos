@@ -4,7 +4,7 @@ import javax.swing.table.AbstractTableModel;
 
 import static auctionsniper.Main.MainWindow.*;
 
-public class SniperTableModel extends AbstractTableModel{
+public class SniperTableModel extends AbstractTableModel implements SniperListener{
 
     private static String[] STATUS_TEXT = {
            "Joining","Bidding","Winning","Lost","Won"
@@ -24,10 +24,16 @@ public class SniperTableModel extends AbstractTableModel{
         return Column.at(columnIndex).valueIn(snapshot);
     }
 
-    public void sniperStatusChanged(SniperSnapshot snapshot){
+    public void sniperStateChanged(SniperSnapshot snapshot){
         System.out.println("SniperTableModel.sniperStatusChanged " + snapshot);
         this.snapshot = snapshot;
         fireTableRowsUpdated(0,0);
+    }
+
+
+    @Override
+    public String getColumnName(int column) {
+        return Column.at(column).name;
     }
 
     public static String textFor(SniperState state){

@@ -112,7 +112,7 @@ public class Main {
             this.snipers = snipers;
         }
         public void sniperStateChanged(final SniperSnapshot snapshot) {
-            snipers.sniperStatusChanged(snapshot);
+            snipers.sniperStateChanged(snapshot);
         }
     }
 
@@ -150,10 +150,6 @@ public class Main {
             final Container contentPane = getContentPane();
             contentPane.setLayout(new BorderLayout());
             contentPane.add(new JScrollPane(snipersTable), BorderLayout.CENTER);
-        }
-
-        public void sniperStatusChanged(SniperSnapshot snapshot){
-            snipers.sniperStatusChanged(snapshot);
         }
     }
 }
