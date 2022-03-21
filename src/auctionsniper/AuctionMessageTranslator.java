@@ -26,7 +26,7 @@ public class AuctionMessageTranslator implements MessageListener{
 
         AuctionEvent event = AuctionEvent.from(message.getBody());
 
-        System.out.println(event.type());
+        System.out.println("AuctionMessageTranslator.processMessage " + event);
 
         String type = event.type();
         if("CLOSE".equals(type)){
@@ -85,6 +85,13 @@ public class AuctionMessageTranslator implements MessageListener{
 
         private String bidder() {
             return get("Bidder");
+        }
+
+        @Override
+        public String toString() {
+            return "AuctionEvent{" +
+                    "fields=" + fields +
+                    '}';
         }
     }
 }

@@ -102,33 +102,14 @@ public class Main {
     }
 
     public class SniperStateDisplayer implements SniperListener{
-        public void sniperLost() {
-            showStatus(null, MainWindow.STATUS_LOST);
-        }
 
-        public void sniperBidding(SniperState sniperState){
-            showStatus(sniperState, MainWindow.STATUS_BIDDING);
-        }
-
-        public void sniperWinning(){
-            showStatus(null, MainWindow.STATUS_WINNING);
-        }
-
-        public void sniperWon() {
-            showStatus(null, MainWindow.STATUS_WON);
-        }
-
-        private void showStatus(final SniperState sniperState, final String status){
-
-            System.out.println("SniperStateDisplayer >> " + status);
-
+        public void sniperStateChanged(final SniperSnapshot snapshot) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    ui.sniperStatusChanged(sniperState, status);
+                    ui.sniperStatusChanged(snapshot);
                 }
             });
         }
-
     }
 
     public class MainWindow extends JFrame{
@@ -167,8 +148,8 @@ public class Main {
             contentPane.add(new JScrollPane(snipersTable), BorderLayout.CENTER);
         }
 
-        public void sniperStatusChanged(SniperState sniperState, String statusText){
-            snipers.sniperStatusChanged(sniperState, statusText);
+        public void sniperStatusChanged(SniperSnapshot snapshot){
+            snipers.sniperStatusChanged(snapshot);
         }
     }
 }

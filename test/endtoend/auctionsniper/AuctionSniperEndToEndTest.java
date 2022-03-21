@@ -21,8 +21,8 @@ public class AuctionSniperEndToEndTest {
 
         auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
 
-        auction.reportPrice(1000,98, ApplicationRunner.SNIPER_XMPP_ID);
-        application.hasShownSniperIsWinning(1098); //낙
+        auction.reportPrice(1098,97, ApplicationRunner.SNIPER_XMPP_ID);
+        application.hasShownSniperIsWinning(1098); //
 
         auction.announceClosed(); // 종료메시지 전송
         application.showsSniperHasWonAuction(1098); //최종가격

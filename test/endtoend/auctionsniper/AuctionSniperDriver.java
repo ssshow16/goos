@@ -43,10 +43,5 @@ public class AuctionSniperDriver extends JFrameDriver{
                                 withLabelText(statusText)
                         )
                 );
-//        new JTableDriver(this).hasCell(
-//                withLabelText(
-//                        equalTo(statusText)
-//                )
-//        );
     }
 }
