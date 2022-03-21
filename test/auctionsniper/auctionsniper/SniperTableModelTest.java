@@ -55,7 +55,7 @@ public class SniperTableModelTest {
     }
 
     private Matcher<TableModelEvent> aRowChangedEvent() {
-        return samePropertyValuesAs(new TableModelEvent(model));
+        return samePropertyValuesAs(new TableModelEvent(model,0));
     }
 
 
