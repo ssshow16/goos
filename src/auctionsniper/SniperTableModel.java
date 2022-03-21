@@ -20,7 +20,7 @@ public class SniperTableModel extends AbstractTableModel{
         return statusText;
     }
 
-    public void setStatusText(String newStatusText){
+    public void sniperStatusChanged(SniperState sniperState, String newStatusText){
         this.statusText = newStatusText;
         fireTableRowsUpdated(0,0);
     }

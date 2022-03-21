@@ -2,18 +2,14 @@ package auctionsniper;
 
 import auctionsniper.xmpp.XMPPAuction;
 import org.jivesoftware.smack.Chat;
-import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import static auctionsniper.Main.MainWindow.STATUS_JOINING;
 import static com.sun.java.swing.ui.CommonUI.createLabel;
 
 /**
@@ -107,28 +103,28 @@ public class Main {
 
     public class SniperStateDisplayer implements SniperListener{
         public void sniperLost() {
-            showStatus(MainWindow.STATUS_LOST);
+            showStatus(null, MainWindow.STATUS_LOST);
         }
 
         public void sniperBidding(SniperState sniperState){
-            showStatus(MainWindow.STATUS_BIDDING);
+            showStatus(sniperState, MainWindow.STATUS_BIDDING);
         }
 
         public void sniperWinning(){
-            showStatus(MainWindow.STATUS_WINNING);
+            showStatus(null, MainWindow.STATUS_WINNING);
         }
 
         public void sniperWon() {
-            showStatus(MainWindow.STATUS_WON);
+            showStatus(null, MainWindow.STATUS_WON);
         }
 
-        private void showStatus(final String status){
+        private void showStatus(final SniperState sniperState, final String status){
 
             System.out.println("SniperStateDisplayer >> " + status);
 
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    ui.showStatusText(status);
+                    ui.sniperStatusChanged(sniperState, status);
                 }
             });
         }
@@ -171,10 +167,8 @@ public class Main {
             contentPane.add(new JScrollPane(snipersTable), BorderLayout.CENTER);
         }
 
-        public void showStatusText(String statusText){
-
-            System.out.println("MainWindow >" + statusText);
-            snipers.setStatusText(statusText);
+        public void sniperStatusChanged(SniperState sniperState, String statusText){
+            snipers.sniperStatusChanged(sniperState, statusText);
         }
     }
 }
