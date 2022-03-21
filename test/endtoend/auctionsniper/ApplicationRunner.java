@@ -3,6 +3,7 @@ package auctionsniper;
 import java.io.IOException;
 
 import static auctionsniper.FakeAuctionServer.XMPP_HOSTNAME;
+import static auctionsniper.Main.MainWindow.APPLICATION_TITLE;
 
 public class ApplicationRunner {
     public static final String SNIPER_ID = "sniper";
@@ -34,6 +35,8 @@ public class ApplicationRunner {
         thread.start();
 
         driver = new AuctionSniperDriver(1000);
+        driver.hasTitle(APPLICATION_TITLE);
+        driver.hasColumnTitles();
         driver.showsSniperStatus("", 0, 0, Main.MainWindow.STATUS_JOINING);
     }
 
