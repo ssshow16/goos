@@ -24,7 +24,7 @@ public class AuctionSniperEndToEndTest {
         application.hasShownSniperIsWinning();
 
         auction.announceClosed(); // 종료메시지 전송
-        application.showsSniHasWonAuction(); //화면에 Lost 출력여부를 확인한다
+        application.showsSniperHasWonAuction(); //화면에 Lost 출력여부를 확인한다
     }
 
     @After
