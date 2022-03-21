@@ -34,7 +34,7 @@ public class ApplicationRunner {
         thread.start();
 
         driver = new AuctionSniperDriver(1000);
-        driver.showsSniperStatus(itemId, 0, 0, Main.MainWindow.STATUS_JOINING);
+        driver.showsSniperStatus("", 0, 0, Main.MainWindow.STATUS_JOINING);
     }
 
     public void showsSniperHasLostAuction() {
