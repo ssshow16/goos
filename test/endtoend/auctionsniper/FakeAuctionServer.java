@@ -47,10 +47,6 @@ public class FakeAuctionServer {
         return this.itemId;
     }
 
-//    public void hasReceivedJoinRequestFromSniper() throws InterruptedException {
-//        messageListener.receivesAMessage();
-//    }
-
     public void hasReceivedJoinRequestFrom(String sniperId)
             throws InterruptedException {
         receivesAMessageMatching(sniperId, equalTo(Main.JOIN_COMMAND_FORMAT));
@@ -98,7 +94,6 @@ public class FakeAuctionServer {
             final Message message = messages.poll(5, TimeUnit.SECONDS);
             assertThat("Message", message, is(notNullValue()));
             assertThat(message.getBody(), messageMatcher);
-//            assertThat("Message", messages.poll(5, TimeUnit.SECONDS), is(notNullValue()));
         }
     }
 }

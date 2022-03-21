@@ -29,6 +29,7 @@ public class XMPPAuction implements Auction {
 
     private void sendMessage(String message) {
         try {
+            System.out.println("XMPPAuction > " + message);
             chat.sendMessage(message);
         } catch (XMPPException e) {
             e.printStackTrace();

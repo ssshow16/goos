@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import static auctionsniper.Main.MainWindow.STATUS_JOINING;
 import static com.sun.java.swing.ui.CommonUI.createLabel;
 
 /**
@@ -158,13 +159,6 @@ public class Main {
             setVisible(true);
         }
 
-//        private JLabel createLabel(String initialText){
-//            JLabel result = new JLabel(initialText);
-//            result.setName(SNIPER_STATUS_NAME);
-//            result.setBorder(new LineBorder(Color.BLACK));
-//            return result;
-//        }
-
         private JTable makeSnipersTable() {
             final JTable snipersTable = new JTable(snipers);
             snipersTable.setName(SNIPERS_TABLE_NAME);
@@ -178,6 +172,8 @@ public class Main {
         }
 
         public void showStatusText(String statusText){
+
+            System.out.println("MainWindow >" + statusText);
             snipers.setStatusText(statusText);
         }
     }

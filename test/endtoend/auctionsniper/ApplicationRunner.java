@@ -11,7 +11,11 @@ public class ApplicationRunner {
 
     private AuctionSniperDriver driver;
 
+    private String itemId;
+
     public void startBiddingIn(final FakeAuctionServer auctions) {
+        this.itemId = auctions.getItemId();
+
         Thread thread = new Thread("Test Application") {
             @Override
             public void run() {
@@ -30,23 +34,28 @@ public class ApplicationRunner {
         thread.start();
 
         driver = new AuctionSniperDriver(1000);
-        driver.showsSniperStatus(Main.MainWindow.STATUS_JOINING);
+        driver.showsSniperStatus(itemId, 0, 0, Main.MainWindow.STATUS_JOINING);
     }
 
     public void showsSniperHasLostAuction() {
-        driver.showsSniperStatus(Main.MainWindow.STATUS_LOST);
+        driver.showsSniperStatus(itemId, 0, 0, Main.MainWindow.STATUS_LOST);
     }
 
-    public void hasShownSniperIsBidding() {
-        driver.showsSniperStatus(Main.MainWindow.STATUS_BIDDING);
+    public void hasShownSniperIsBidding(int lastPrice, int lastBid) {
+        driver.showsSniperStatus(itemId, lastPrice, lastBid,
+                Main.MainWindow.STATUS_BIDDING);
     }
 
-    public void hasShownSniperIsWinning() {
-        driver.showsSniperStatus(Main.MainWindow.STATUS_WINNING);
+    public void hasShownSniperIsWinning(int winningBid) {
+        driver.showsSniperStatus(
+                itemId, winningBid,winningBid,
+                Main.MainWindow.STATUS_WINNING);
     }
 
-    public void showsSniperHasWonAuction() {
-        driver.showsSniperStatus(Main.MainWindow.STATUS_WON);
+    public void showsSniperHasWonAuction(int lastPrice) {
+        driver.showsSniperStatus(
+                itemId, lastPrice, lastPrice,
+                Main.MainWindow.STATUS_WON);
     }
 
     public void stop() {
