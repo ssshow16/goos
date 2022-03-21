@@ -29,6 +29,8 @@ public class Main {
     public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
     public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
 
+    private final SniperTableModel snipers = new SniperTableModel();
+
     private MainWindow ui;
 
     private Chat notToBeGCd;
@@ -42,7 +44,7 @@ public class Main {
         SwingUtilities.invokeAndWait(
                 new Runnable() {
                     public void run() {
-                        ui = new MainWindow();
+                        ui = new MainWindow(snipers);
                     }
                 }
         );
@@ -77,7 +79,8 @@ public class Main {
 
         chat.addMessageListener(new AuctionMessageTranslator(
                 connection.getUser(),
-                new AuctionSniper(itemId, auction, new SniperStateDisplayer())));
+                new AuctionSniper(itemId, auction,
+                        new SwingThreadSniperListener(snipers))));
         auction.join();
     }
 
@@ -101,20 +104,21 @@ public class Main {
         });
     }
 
-    public class SniperStateDisplayer implements SniperListener{
+    public class SwingThreadSniperListener implements SniperListener{
 
+        SniperTableModel snipers;
+
+        public SwingThreadSniperListener(SniperTableModel snipers){
+            this.snipers = snipers;
+        }
         public void sniperStateChanged(final SniperSnapshot snapshot) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    ui.sniperStatusChanged(snapshot);
-                }
-            });
+            snipers.sniperStatusChanged(snapshot);
         }
     }
 
     public class MainWindow extends JFrame{
 
-        private final SniperTableModel snipers = new SniperTableModel();
+//        private final SniperTableModel snipers = new SniperTableModel();
 
         public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
         public static final String APPLICATION_TITLE = "Auction Sniper";
@@ -127,16 +131,16 @@ public class Main {
 
         private static final String SNIPERS_TABLE_NAME = "Snipers Table";
 
-        public MainWindow(){
+        public MainWindow(SniperTableModel snipers){
             super(APPLICATION_TITLE);
             setName(MAIN_WINDOW_NAME);
-            fillContentPane(makeSnipersTable());
+            fillContentPane(makeSnipersTable(snipers));
             pack();
             setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             setVisible(true);
         }
 
-        private JTable makeSnipersTable() {
+        private JTable makeSnipersTable(SniperTableModel snipers) {
             final JTable snipersTable = new JTable(snipers);
             snipersTable.setName(SNIPERS_TABLE_NAME);
             return snipersTable;
