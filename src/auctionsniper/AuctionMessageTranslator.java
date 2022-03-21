@@ -26,6 +26,8 @@ public class AuctionMessageTranslator implements MessageListener{
 
         AuctionEvent event = AuctionEvent.from(message.getBody());
 
+        System.out.println(event.type());
+
         String type = event.type();
         if("CLOSE".equals(type)){
             listener.auctionClosed();

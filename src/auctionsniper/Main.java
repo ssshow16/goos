@@ -13,6 +13,8 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import static com.sun.java.swing.ui.CommonUI.createLabel;
+
 /**
  * Created by a1000107 on 2022/03/04.
  */
@@ -27,8 +29,6 @@ public class Main {
     public static final String AUCTION_ID_FORMAT =
             ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
 
-
-    public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
     public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
     public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
 
@@ -118,12 +118,16 @@ public class Main {
         }
 
         public void sniperWon() {
+            showStatus(MainWindow.STATUS_WON);
         }
 
         private void showStatus(final String status){
+
+            System.out.println("SniperStateDisplayer >> " + status);
+
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    ui.showStatus(status);
+                    ui.showStatusText(status);
                 }
             });
         }
@@ -132,34 +136,49 @@ public class Main {
 
     public class MainWindow extends JFrame{
 
+        private final SniperTableModel snipers = new SniperTableModel();
+
+        public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
+        public static final String APPLICATION_TITLE = "Auction Sniper";
+
         public static final String STATUS_JOINING = "Joining";
         public static final String STATUS_LOST = "Lost";
         public static final String STATUS_BIDDING = "Bidding";
         public static final String STATUS_WINNING = "Winning";
+        public static final String STATUS_WON = "Won";
 
-        public static final String SNIPER_STATUS_NAME = "sniper status";
-
-        private final JLabel sniperStatus = createLabel(STATUS_JOINING);
-
+        private static final String SNIPERS_TABLE_NAME = "Snipers Table";
 
         public MainWindow(){
-            super("Auction Sniper");
+            super(APPLICATION_TITLE);
             setName(MAIN_WINDOW_NAME);
-            add(sniperStatus);
+            fillContentPane(makeSnipersTable());
             pack();
             setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             setVisible(true);
         }
 
-        private JLabel createLabel(String initialText){
-            JLabel result = new JLabel(initialText);
-            result.setName(SNIPER_STATUS_NAME);
-            result.setBorder(new LineBorder(Color.BLACK));
-            return result;
+//        private JLabel createLabel(String initialText){
+//            JLabel result = new JLabel(initialText);
+//            result.setName(SNIPER_STATUS_NAME);
+//            result.setBorder(new LineBorder(Color.BLACK));
+//            return result;
+//        }
+
+        private JTable makeSnipersTable() {
+            final JTable snipersTable = new JTable(snipers);
+            snipersTable.setName(SNIPERS_TABLE_NAME);
+            return snipersTable;
         }
 
-        public void showStatus(String status){
-            sniperStatus.setText(status);
+        private void fillContentPane(JTable snipersTable) {
+            final Container contentPane = getContentPane();
+            contentPane.setLayout(new BorderLayout());
+            contentPane.add(new JScrollPane(snipersTable), BorderLayout.CENTER);
+        }
+
+        public void showStatusText(String statusText){
+            snipers.setStatusText(statusText);
         }
     }
 }
