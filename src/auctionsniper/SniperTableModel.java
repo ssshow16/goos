@@ -39,4 +39,7 @@ public class SniperTableModel extends AbstractTableModel implements SniperListen
     public static String textFor(SniperState state){
         return STATUS_TEXT[state.ordinal()];
     }
+
+    public void addSniper(SniperSnapshot joining) {
+    }
 }
