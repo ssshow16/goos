@@ -14,11 +14,17 @@ public class ApplicationRunner {
 
     private AuctionSniperDriver driver;
 
-//    private String itemId;
-
     public void startBiddingIn(final FakeAuctionServer... auctions) {
-//        this.itemId = auctions.getItemId();
+        startSniper(auctions);
+        for(FakeAuctionServer auction: auctions){
 
+            final String itemId = auction.getItemId();
+            driver.startBiddingFor(itemId);
+            driver.showsSniperStatus(itemId, 0, 0, textFor(JOINING));
+        }
+    }
+
+    private void startSniper(final FakeAuctionServer... auctions) {
         Thread thread = new Thread("Test Application") {
             @Override
             public void run() {
@@ -32,14 +38,9 @@ public class ApplicationRunner {
         thread.setDaemon(true);
         thread.start();
 
-
         driver = new AuctionSniperDriver(1000);
         driver.hasTitle(APPLICATION_TITLE);
         driver.hasColumnTitles();
-
-        for(FakeAuctionServer auction: auctions){
-            driver.showsSniperStatus("", 0, 0, textFor(JOINING));//TODO 이렇게 해야 16.1.3에 맞게 처리됨.
-        }
     }
 
     protected static String[] arguements(FakeAuctionServer... auctions){

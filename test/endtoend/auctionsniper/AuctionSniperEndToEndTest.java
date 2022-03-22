@@ -1,6 +1,7 @@
 package auctionsniper;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class AuctionSniperEndToEndTest {
@@ -9,6 +10,11 @@ public class AuctionSniperEndToEndTest {
     private final FakeAuctionServer auction2 = new FakeAuctionServer("item-65432");
 
     private final ApplicationRunner application = new ApplicationRunner();
+
+    @Before
+    public void setKeyboard(){
+        System.setProperty("com.objogate.wl.keyboard", "Mac-GB");
+    }
 
     @Test
     public void sniperMakesAHigherBidButLoses() throws Exception {

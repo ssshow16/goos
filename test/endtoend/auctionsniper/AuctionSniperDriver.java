@@ -1,12 +1,10 @@
 package auctionsniper;
 
 import com.objogate.wl.swing.AWTEventQueueProber;
-import com.objogate.wl.swing.driver.JFrameDriver;
-import com.objogate.wl.swing.driver.JLabelDriver;
-import com.objogate.wl.swing.driver.JTableDriver;
-import com.objogate.wl.swing.driver.JTableHeaderDriver;
+import com.objogate.wl.swing.driver.*;
 import com.objogate.wl.swing.gesture.GesturePerformer;
 
+import javax.swing.*;
 import javax.swing.table.JTableHeader;
 
 import static com.objogate.wl.swing.matcher.IterableComponentsMatcher.matching;
@@ -56,4 +54,23 @@ public class AuctionSniperDriver extends JFrameDriver {
                 withLabelText("Last Bid"),
                 withLabelText("State")));
     }
+
+    @SuppressWarnings("unchecked")
+    public void startBiddingFor(String itemId) {
+        System.out.println("startBiddingFor >>" + itemId);
+        itemIdField().replaceAllText(itemId);
+        bidButton().click();
+    }
+
+    private JTextFieldDriver itemIdField() {
+        JTextFieldDriver newItemId =
+                new JTextFieldDriver(this, JTextField.class, named(Main.MainWindow.NEW_ITEM_ID_NAME));
+        newItemId.focusWithMouse();
+        return newItemId;
+    }
+
+    private JButtonDriver bidButton() {
+        return new JButtonDriver(this, JButton.class, named(Main.MainWindow.JOIN_BUTTON_NAME));
+    }
+
 }
