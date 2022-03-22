@@ -1,9 +1,7 @@
 package auctionsniper;
 
-import java.io.IOException;
-
 import static auctionsniper.FakeAuctionServer.XMPP_HOSTNAME;
-import static auctionsniper.Main.MainWindow.APPLICATION_TITLE;
+import static auctionsniper.MainWindow.APPLICATION_TITLE;
 import static auctionsniper.SniperState.JOINING;
 import static auctionsniper.SniperTableModel.textFor;
 
@@ -60,19 +58,19 @@ public class ApplicationRunner {
 
     public void hasShownSniperIsBidding(FakeAuctionServer auction, int lastPrice, int lastBid) {
         driver.showsSniperStatus(auction.getItemId(), lastPrice, lastBid,
-                Main.MainWindow.STATUS_BIDDING);
+                MainWindow.STATUS_BIDDING);
     }
 
     public void hasShownSniperIsWinning(FakeAuctionServer auction, int winningBid) {
         driver.showsSniperStatus(
                 auction.getItemId(), winningBid,winningBid,
-                Main.MainWindow.STATUS_WINNING);
+                MainWindow.STATUS_WINNING);
     }
 
     public void showsSniperHasWonAuction(FakeAuctionServer auction, int lastPrice) {
         driver.showsSniperStatus(
                 auction.getItemId(), lastPrice, lastPrice,
-                Main.MainWindow.STATUS_WON);
+                MainWindow.STATUS_WON);
     }
 
     public void stop() {

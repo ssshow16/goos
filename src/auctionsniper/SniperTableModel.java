@@ -7,8 +7,6 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static auctionsniper.Main.MainWindow.*;
-
 public class SniperTableModel extends AbstractTableModel implements SniperListener{
 
     private static String[] STATUS_TEXT = {
