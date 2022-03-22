@@ -11,9 +11,11 @@ import org.junit.runner.RunWith;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
-import static org.junit.Assert.*;
 
 @RunWith(JMock.class)
 public class SniperTableModelTest {
@@ -35,16 +37,19 @@ public class SniperTableModelTest {
 
     @Test
     public void setsSniperValuesInColumns() {
+
+        SniperSnapshot joining = SniperSnapshot.joining("item id");
+        SniperSnapshot bidding = joining.bidding(555,666);
+
         context.checking(new Expectations() {{
-            one(listener).tableChanged(with(aRowChangedEvent()));
+            allowing(listener).tableChanged(with(anyInsertionEvent()));
+            one(listener).tableChanged(with(aChangeInRow(0)));
         }});
 
-        model.sniperStateChanged(new SniperSnapshot("item id", 555, 666, SniperState.BIDDING));
+        model.addSniper(joining);
+        model.sniperStateChanged(bidding);
 
-        assertColumnEquals(Column.ITEM_IDENTIFIER, "item id");
-        assertColumnEquals(Column.LAST_PRICE, 555);
-        assertColumnEquals(Column.LAST_BID, 666);
-        assertColumnEquals(Column.SNIPER_STATUS, Main.MainWindow.STATUS_BIDDING);
+        assertRowMatchesSnapshot(0, bidding);
     }
 
     @Test
@@ -69,6 +74,27 @@ public class SniperTableModelTest {
 
         assertEquals(1, model.getRowCount()); //테이블에 추가되었는지 갯수 확인
         assertRowMatchesSnapshot(0, joining); //추가된 스탭샷이 조인인지 확인한다.
+    }
+
+    @Test
+    public void holdsSnipersInAdditionOrder() {
+        context.checking(new Expectations() { {
+            ignoring(listener);
+        }});
+
+        model.addSniper(SniperSnapshot.joining("item 0"));
+        model.addSniper(SniperSnapshot.joining("item 1"));
+
+        assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER));
+        assertEquals("item 1", cellValue(1, Column.ITEM_IDENTIFIER));
+    }
+
+    private Matcher<TableModelEvent> anyInsertionEvent() {
+        return hasProperty("type", equalTo(TableModelEvent.INSERT));
+    }
+
+    private Matcher<TableModelEvent> aChangeInRow(int row) {
+        return samePropertyValuesAs(new TableModelEvent(model, row));
     }
 
     private void assertColumnEquals(Column column, Object expected){
