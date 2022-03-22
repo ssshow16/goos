@@ -19,7 +19,7 @@ public class AuctionSniperEndToEndTest {
         auction.hasReceivedJoinRequestFrom(ApplicationRunner.SNIPER_XMPP_ID); // XMPP로 부터 메시지 수신여부를 확인한다
 
         auction.reportPrice(1000,98,"other bidder"); // 가격:1000, 증액 98, 'other bidder' 이름으로 메시지 전송
-        application.hasShownSniperIsBidding(1000, 1098); // 최종가격과 입찰
+        application.hasShownSniperIsBidding(auction, 1000, 1098); // 최종가격과 입찰
 
         auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID);
 

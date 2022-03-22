@@ -9,8 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-import static com.sun.java.swing.ui.CommonUI.createLabel;
+import java.util.ArrayList;
 
 /**
  * Created by a1000107 on 2022/03/04.
@@ -33,7 +32,7 @@ public class Main {
 
     private MainWindow ui;
 
-    private Chat notToBeGCd;
+    private java.util.List<Chat> notToBeGCd = new ArrayList<Chat>();
 
     public Main() throws Exception{
         startUserInterface();
@@ -53,27 +52,24 @@ public class Main {
     public static void main(String... args) throws Exception {
         Main main = new Main();
 
-        main.joinAuction(
-                connection(
-                        args[ARG_HOSTNAME],
+        XMPPConnection connection =
+                connection( args[ARG_HOSTNAME],
                         args[ARG_USERNAME],
-                        args[ARG_PASSWORD]
-                ),
-                args[ARG_ITEM_ID]
-        );
+                        args[ARG_PASSWORD]);
+        main.disconnectWhenUICloses(connection);
+        for(int i = 3 ; i < args.length ; i++){
+            main.joinAuction(connection,  args[i]);
+        }
     }
 
     private void joinAuction(XMPPConnection connection, String itemId) throws XMPPException{
-
-
-        disconnectWhenUICloses(connection);
 
 
         final Chat chat = connection.getChatManager().createChat(
                 auctionId(itemId, connection),
                 null
         );
-        this.notToBeGCd = chat;
+        this.notToBeGCd.add(chat);
 
         Auction auction = new XMPPAuction(chat);
 
