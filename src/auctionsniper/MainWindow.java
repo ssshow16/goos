@@ -1,7 +1,11 @@
 package auctionsniper;
 
+import auctionsniper.util.Announcer;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by a1000107 on 2022/03/22.
@@ -19,6 +23,9 @@ public class MainWindow extends JFrame {
 
     public static final String NEW_ITEM_ID_NAME = "item id";
     public static final String JOIN_BUTTON_NAME = "join button";
+
+    private final Announcer<UserRequestListener> userRequests
+             = Announcer.to(UserRequestListener.class);
 
     public MainWindow(SniperTableModel snipers) {
         super(APPLICATION_TITLE);
@@ -38,6 +45,12 @@ public class MainWindow extends JFrame {
 
         JButton joinAuctionButton = new JButton("Join Auction");
         joinAuctionButton.setName(JOIN_BUTTON_NAME);
+        joinAuctionButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("joinAuctionButton.actionPerformed ");
+                userRequests.announce().joinAuction(itemIdField.getText());
+            }
+        });
         controls.add(joinAuctionButton);
 
         return controls;
@@ -57,6 +70,6 @@ public class MainWindow extends JFrame {
     }
 
     public void addUserRequestListener(UserRequestListener userRequestListener) {
-
+        userRequests.addListener(userRequestListener);
     }
 }

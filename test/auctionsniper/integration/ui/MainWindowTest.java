@@ -23,19 +23,23 @@ public class MainWindowTest {
 
     @Test
     public void makesUserRequestWhenJoinButtonClicked() {
+        System.setProperty("com.objogate.wl.keyboard", "Mac-GB");
+
+
         final ValueMatcherProbe<String> buttonProbe
                  = new ValueMatcherProbe<String>(
-                equalTo("an item-id"), "join request"
-        );
+                equalTo("itemid"), "join request"
+        ); // '-' 처리 못하여 이름을 변경함.
 
         mainWindow.addUserRequestListener(
                 new UserRequestListener(){
                     public void joinAuction(String itemId){
+                        System.out.println("test joinAuction " + itemId);
                         buttonProbe.setReceivedValue(itemId);
                     }
                 }
         );
-        driver.startBiddingFor("an item-id");
+        driver.startBiddingFor("itemid");
         driver.check(buttonProbe);
     }
 }

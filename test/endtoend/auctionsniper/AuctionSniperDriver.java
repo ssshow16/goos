@@ -12,9 +12,6 @@ import static com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText;
 import static java.lang.String.valueOf;
 
 
-/**
- * Created by a1000107 on 2022/03/04.
- */
 public class AuctionSniperDriver extends JFrameDriver {
 
     public AuctionSniperDriver(int timeoutMililis) {
@@ -57,10 +54,11 @@ public class AuctionSniperDriver extends JFrameDriver {
     @SuppressWarnings("unchecked")
     public void startBiddingFor(String itemId) {
         System.out.println("startBiddingFor >>" + itemId);
-        itemIdField().replaceAllText(itemId);
+        itemIdField().replaceAllText(itemId); //입력 및 버튼 클릭 시뮬레이션이 동작안함
         bidButton().click();
     }
 
+    @SuppressWarnings("unchecked")
     private JTextFieldDriver itemIdField() {
         JTextFieldDriver newItemId =
                 new JTextFieldDriver(this, JTextField.class, named(MainWindow.NEW_ITEM_ID_NAME));
@@ -68,6 +66,7 @@ public class AuctionSniperDriver extends JFrameDriver {
         return newItemId;
     }
 
+    @SuppressWarnings("unchecked")
     private JButtonDriver bidButton() {
         return new JButtonDriver(this, JButton.class, named(MainWindow.JOIN_BUTTON_NAME));
     }
