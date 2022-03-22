@@ -38,7 +38,7 @@ public class ApplicationRunner {
         driver.hasColumnTitles();
 
         for(FakeAuctionServer auction: auctions){
-            driver.showsSniperStatus(auction.getItemId(), 0, 0, textFor(JOINING));
+            driver.showsSniperStatus("", 0, 0, textFor(JOINING));//TODO 이렇게 해야 16.1.3에 맞게 처리됨.
         }
     }
 
