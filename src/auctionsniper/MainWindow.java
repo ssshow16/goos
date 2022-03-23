@@ -41,6 +41,7 @@ public class MainWindow extends JFrame {
         final JTextField itemIdField = new JTextField();
         itemIdField.setColumns(25);
         itemIdField.setName(NEW_ITEM_ID_NAME);
+
         controls.add(itemIdField);
 
         JButton joinAuctionButton = new JButton("Join Auction");
@@ -51,6 +52,7 @@ public class MainWindow extends JFrame {
                 userRequests.announce().joinAuction(itemIdField.getText());
             }
         });
+
         controls.add(joinAuctionButton);
 
         return controls;

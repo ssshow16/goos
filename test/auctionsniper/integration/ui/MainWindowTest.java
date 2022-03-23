@@ -18,17 +18,16 @@ public class MainWindowTest {
 
     @Before
     public void setKeyboard(){
-        System.setProperty("com.objogate.wl.keyboard", "Mac-GB");
+//        System.setProperty("com.objogate.wl.keyboard", "Mac-GB");
     }
 
     @Test
     public void makesUserRequestWhenJoinButtonClicked() {
         System.setProperty("com.objogate.wl.keyboard", "Mac-GB");
 
-
         final ValueMatcherProbe<String> buttonProbe
                  = new ValueMatcherProbe<String>(
-                equalTo("itemid"), "join request"
+                equalTo("itemid"), "join button"
         ); // '-' 처리 못하여 이름을 변경함.
 
         mainWindow.addUserRequestListener(

@@ -13,6 +13,7 @@ public class AuctionSniperEndToEndTest {
 
     @Before
     public void setKeyboard(){
+        System.out.println("setKeyboard");
         System.setProperty("com.objogate.wl.keyboard", "Mac-GB");
     }
 

@@ -13,21 +13,20 @@ import static java.lang.String.valueOf;
 
 
 public class AuctionSniperDriver extends JFrameDriver {
-
-    public AuctionSniperDriver(int timeoutMililis) {
+    @SuppressWarnings("unchecked")
+    public AuctionSniperDriver(int timeoutMillis) {
         super(new GesturePerformer(),
                 JFrameDriver.topLevelFrame(
                         named(MainWindow.MAIN_WINDOW_NAME),
                         showingOnScreen()),
-                new AWTEventQueueProber(timeoutMililis, 100));
+                new AWTEventQueueProber(timeoutMillis, 100));
     }
-
+    @SuppressWarnings("unchecked")
     public void showsSniperStatus(
             String itemId,
             int lastPrice,
             int lastBid,
             String statusText) {
-
 
         System.out.println("AuctionSniperDriver >" + itemId + "," + lastPrice + "," + lastBid + "," + statusText);
 
@@ -41,7 +40,7 @@ public class AuctionSniperDriver extends JFrameDriver {
                         )
                 );
     }
-
+    @SuppressWarnings("unchecked")
     public void hasColumnTitles() {
         JTableHeaderDriver headers = new JTableHeaderDriver(this, JTableHeader.class);
         headers.hasHeaders(matching(
@@ -54,8 +53,13 @@ public class AuctionSniperDriver extends JFrameDriver {
     @SuppressWarnings("unchecked")
     public void startBiddingFor(String itemId) {
         System.out.println("startBiddingFor >>" + itemId);
-        itemIdField().replaceAllText(itemId); //입력 및 버튼 클릭 시뮬레이션이 동작안함
-        bidButton().click();
+        JTextFieldDriver itemIdField = itemIdField();
+        itemIdField.component().component().setText(itemId);
+
+        JButtonDriver jButtonDriver = bidButton();
+        jButtonDriver.click();//호출해줘야 아래 콤포넌트 조회시 조회됨. 안그러면 못 참음.
+        jButtonDriver.component().component().doClick();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -68,7 +72,8 @@ public class AuctionSniperDriver extends JFrameDriver {
 
     @SuppressWarnings("unchecked")
     private JButtonDriver bidButton() {
-        return new JButtonDriver(this, JButton.class, named(MainWindow.JOIN_BUTTON_NAME));
+        JButtonDriver jButtonDriver = new JButtonDriver(this, JButton.class, named(MainWindow.JOIN_BUTTON_NAME));
+        return jButtonDriver;
     }
 
 }

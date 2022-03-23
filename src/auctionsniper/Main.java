@@ -66,6 +66,7 @@ public class Main {
         ui.addUserRequestListener(new UserRequestListener() {
             public void joinAuction(String itemId) {
 
+                System.out.println("UserRequestListener joinAuction > " + itemId);
                 snipers.addSniper(SniperSnapshot.joining(itemId));
 
                 final Chat chat = connection.getChatManager().createChat(
