@@ -32,7 +32,7 @@ public class Main {
 
     private MainWindow ui;
 
-    private java.util.List<Chat> notToBeGCd = new ArrayList<Chat>();
+    private java.util.List<Auction> notToBeGCd = new ArrayList<Auction>();
 
     public Main() throws Exception{
         startUserInterface();
@@ -64,18 +64,12 @@ public class Main {
         ui.addUserRequestListener(new UserRequestListener() {
             public void joinAuction(String itemId) {
 
-                final Chat chat = connection.getChatManager().createChat(
-                        auctionId(itemId, connection),
-                        null
-                );
+                snipers.addSniper(SniperSnapshot.joining(itemId));
 
-                Announcer<AuctionEventListener> auctionEventListeners =
-                        Announcer.to(AuctionEventListener.class);
+                Auction auction = new XMPPAuction(connection, itemId);
+                notToBeGCd.add(auction);
 
-                Auction auction = new XMPPAuction(chat);
-                notToBeGCd.add(chat);
-
-                auctionEventListeners.addListener(
+                auction.addAuctionEventListener(
                     new AuctionSniper(itemId, auction,
                             new SwingThreadSniperListener(snipers)));
                 auction.join();
@@ -120,9 +114,9 @@ public class Main {
         return connection;
     }
 
-    private static String auctionId(String itemId, XMPPConnection connection){
-        return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
-    }
+//    private static String auctionId(String itemId, XMPPConnection connection){
+//        return String.format(AUCTION_ID_FORMAT, itemId, connection.getServiceName());
+//    }
 
     private void disconnectWhenUICloses(final XMPPConnection connection) {
         ui.addWindowListener(new WindowAdapter() {
