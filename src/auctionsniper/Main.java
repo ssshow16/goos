@@ -57,9 +57,6 @@ public class Main {
                         args[ARG_PASSWORD]);
         main.disconnectWhenUICloses(connection);
         main.addUserRequestListenerFor(connection);
-//        for(int i = 3 ; i < args.length ; i++){
-//            main.joinAuction(connection,  args[i]);
-//        }
     }
 
     private void addUserRequestListenerFor(final XMPPConnection connection) {
