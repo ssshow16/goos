@@ -19,7 +19,7 @@ public class FakeAuctionServer {
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";
     public static final String AUCTION_RESOURCE = "Auction";
     public static final String XMPP_HOSTNAME = "localhost";
-    private static final String AUCTION_PASSWORD = "auction";
+    public static final String AUCTION_PASSWORD = "auction";
 
     private final String itemId;
     private final XMPPConnection connection;
@@ -32,6 +32,11 @@ public class FakeAuctionServer {
     }
 
     public void startSellingItem() throws XMPPException {
+        System.out.println(
+                String.format("FakeAuctionServer.startSellingItem > . Connect and login with %s, %s, %s",
+                format(ITEM_ID_AS_LOGIN, itemId),
+                AUCTION_PASSWORD,
+                AUCTION_RESOURCE));
         connection.connect();
         connection.login(format(ITEM_ID_AS_LOGIN, itemId), AUCTION_PASSWORD, AUCTION_RESOURCE);
         connection.getChatManager().addChatListener(
@@ -66,8 +71,9 @@ public class FakeAuctionServer {
     }
 
     public void announceClosed() throws XMPPException {
-//        currentChat.sendMessage(new Message());
-        currentChat.sendMessage("SOLVersion: 1.1; Event:CLOSE;");
+
+        System.out.println("FakeAuctionServer.announceClosed");
+        currentChat.sendMessage("SOLVersion: 1.1; Event: CLOSE;");
     }
 
     public void stop() {
@@ -75,6 +81,7 @@ public class FakeAuctionServer {
     }
 
     public void reportPrice(int price, int increment, String bidder) throws XMPPException{
+        System.out.println(String.format("FakeAuctionServer.reportPrice price:%s, increment:%s, bidder:%s", price, increment, bidder));
         currentChat.sendMessage(
                 String.format("SOLVerion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;", price, increment, bidder)
         );
@@ -86,12 +93,18 @@ public class FakeAuctionServer {
                 new ArrayBlockingQueue<Message>(1);
 
         public void processMessage(Chat chat, Message message) {
+            System.out.println("FakeAuctionServer.processMessage > " + message.getBody());
             messages.add(message);
         }
 
         @SuppressWarnings("unchecked")
         public void receivesAMessage(Matcher<? super String> messageMatcher) throws InterruptedException {
             final Message message = messages.poll(5, TimeUnit.SECONDS);
+
+            if(message != null){
+                System.out.println("FakeAuctionServer.receivesAMessage > " + message.getBody());
+            }
+
             assertThat(message, hasProperty("body", messageMatcher));
         }
     }

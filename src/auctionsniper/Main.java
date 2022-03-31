@@ -11,6 +11,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+import static java.lang.String.format;
+
 /**
  * Created by a1000107 on 2022/03/04.
  */
@@ -70,32 +72,12 @@ public class Main {
                 notToBeGCd.add(auction);
 
                 auction.addAuctionEventListener(
-                    new AuctionSniper(itemId, auction,
-                            new SwingThreadSniperListener(snipers)));
+                        new AuctionSniper(itemId, auction,
+                                new SwingThreadSniperListener(snipers)));
                 auction.join();
             }
         });
     }
-
-//    private void joinAuction(XMPPConnection connection, String itemId) throws Exception{
-//
-//        safelyAddItemToModel(itemId);
-//
-//
-//        final Chat chat = connection.getChatManager().createChat(
-//                auctionId(itemId, connection),
-//                null
-//        );
-//        this.notToBeGCd.add(chat);
-//
-//        Auction auction = new XMPPAuction(chat);
-//
-//        chat.addMessageListener(new AuctionMessageTranslator(
-//                connection.getUser(),
-//                new AuctionSniper(itemId, auction,
-//                        new SwingThreadSniperListener(snipers))));
-//        auction.join();
-//    }
 
     private void safelyAddItemToModel(final String itemId) throws Exception{
         SwingUtilities.invokeAndWait(
@@ -111,6 +93,9 @@ public class Main {
         XMPPConnection connection = new XMPPConnection(hostname);
         connection.connect();
         connection.login(username, password, AUCTION_RESOURCE);
+
+        System.out.println(String.format("Main.connection > . Connect and login with %s , %s, %s ", username, password, AUCTION_RESOURCE));
+
         return connection;
     }
 

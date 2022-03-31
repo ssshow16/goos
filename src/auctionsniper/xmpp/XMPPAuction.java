@@ -43,7 +43,7 @@ public class XMPPAuction implements Auction {
 
     private void sendMessage(String message) {
         try {
-            System.out.println("XMPPAuction > " + message);
+            System.out.println("XMPPAuction.sendMessage > " + message);
             chat.sendMessage(message);
         } catch (XMPPException e) {
             e.printStackTrace();
@@ -55,6 +55,6 @@ public class XMPPAuction implements Auction {
     }
 
     public void addAuctionEventListener(AuctionEventListener auctionEventListener) {
-        
+        this.auctionEventListeners.addListener(auctionEventListener);
     }
 }
