@@ -35,7 +35,7 @@ public class Main {
 
     private MainWindow ui;
 
-    private java.util.List<Auction> notToBeGCd = new ArrayList<Auction>();
+    private final SniperPortfolio portfolio = new SniperPortfolio();
 
     public Main() throws Exception{
         startUserInterface();
@@ -46,7 +46,8 @@ public class Main {
         SwingUtilities.invokeAndWait(
                 new Runnable() {
                     public void run() {
-                        ui = new MainWindow(snipers);
+//                        ui = new MainWindow(snipers);
+                        ui = new MainWindow(portfolio);
                     }
                 }
         );
@@ -67,7 +68,8 @@ public class Main {
     }
 
     private void addUserRequestListenerFor(final AuctionHouse auctionHouse) {
-        ui.addUserRequestListener(new SniperLauncher(auctionHouse, snipers));
+//        ui.addUserRequestListener(new SniperLauncher(auctionHouse, snipers));
+        ui.addUserRequestListener(new SniperLauncher(auctionHouse, portfolio));
     }
 
     private void disconnectWhenUICloses(final XMPPAuctionHouse auctionHouse) {

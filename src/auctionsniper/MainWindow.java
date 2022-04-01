@@ -27,10 +27,10 @@ public class MainWindow extends JFrame {
     private final Announcer<UserRequestListener> userRequests
              = Announcer.to(UserRequestListener.class);
 
-    public MainWindow(SniperTableModel snipers) {
+    public MainWindow(SniperPortfolio portfolio){
         super(APPLICATION_TITLE);
         setName(MAIN_WINDOW_NAME);
-        fillContentPane(makeSnipersTable(snipers), makeControls());
+        fillContentPane(makeSnipersTable(portfolio), makeControls());
         pack();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
@@ -58,8 +58,12 @@ public class MainWindow extends JFrame {
         return controls;
     }
 
-    private JTable makeSnipersTable(SniperTableModel snipers) {
-        final JTable snipersTable = new JTable(snipers);
+//    private JTable makeSnipersTable(SniperTableModel snipers) {
+    private JTable makeSnipersTable(SniperPortfolio portfolio) {
+        SniperTableModel model = new SniperTableModel();
+        portfolio.addPortfolioListener(model);
+
+        final JTable snipersTable = new JTable(model);
         snipersTable.setName(SNIPERS_TABLE_NAME);
         return snipersTable;
     }

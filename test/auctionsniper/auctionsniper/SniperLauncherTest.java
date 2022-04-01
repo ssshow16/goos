@@ -26,13 +26,17 @@ public class SniperLauncherTest {
         final String itemId = "item 123";
         context.checking(new Expectations(){
             {
+                // auctionHouse.auctionFor(itemId);
                 allowing(auctionHouse).auctionFor(itemId); will(returnValue(auction));
 
+                // auction.addAuctionEventListener(sniper);
                 oneOf(auction).addAuctionEventListener(with(sniperForItem(itemId)));
                     when(auctionState.is("not joined"));
+                //  collector.addSniper(sniper);
                 oneOf(sniperCollector).addSniper(with(sniperForItem(itemId)));
                     when(auctionState.is("not joined"));
 
+                // auction.join();
                 one(auction).join(); then(auctionState.is("joined"));
             }
         });
