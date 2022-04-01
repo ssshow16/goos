@@ -25,13 +25,13 @@ public class AuctionSniperTest {
 
 
     private final String ITEM_ID = "1234";
-    private final AuctionSniper sniper = new AuctionSniper(ITEM_ID, auction, sniperListener);
+    private final AuctionSniper sniper = new AuctionSniper(ITEM_ID, auction);
     private final States sniperState = context.states("sniper");
 
-//    @Before
-//    public void addAuctionSniperListener() {
-//        sniper.addSniperListener(sniperListener);
-//    }
+    @Before
+    public void addAuctionSniperListener() {
+        sniper.addSniperListener(sniperListener);
+    }
 
     @Test
     public void reportLostWhenAuctionCloses(){

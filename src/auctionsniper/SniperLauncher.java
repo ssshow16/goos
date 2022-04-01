@@ -11,7 +11,7 @@ public class SniperLauncher implements UserRequestListener {
     private AuctionHouse auctionHouse;
     private SniperCollector collector;
 
-//    private List<Auction> notToBeGCd = new ArrayList<Auction>();
+
 //    private SniperTableModel snipers;
 
 //    public SniperLauncher(AuctionHouse auctionHouse, SniperTableModel snipers){
@@ -26,11 +26,7 @@ public class SniperLauncher implements UserRequestListener {
 //        snipers.addSniper(SniperSnapshot.joining(itemId));
 
         Auction auction = auctionHouse.auctionFor(itemId);
-        AuctionSniper sniper = new AuctionSniper(itemId, auction, new SniperListener() {
-            public void sniperStateChanged(SniperSnapshot sniperSnapshot) {
-                //TODO?
-            }
-        });
+        AuctionSniper sniper = new AuctionSniper(itemId, auction);
         auction.addAuctionEventListener(sniper);
         collector.addSniper(sniper);
 //        notToBeGCd.add(auction);

@@ -67,7 +67,7 @@ public class Main {
     }
 
     private void addUserRequestListenerFor(final AuctionHouse auctionHouse) {
-//        ui.addUserRequestListener(new SniperLauncher(auctionHouse, snipers)); //TODO 컴파일
+        ui.addUserRequestListener(new SniperLauncher(auctionHouse, snipers));
     }
 
     private void disconnectWhenUICloses(final XMPPAuctionHouse auctionHouse) {

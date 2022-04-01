@@ -46,7 +46,7 @@ public class SniperTableModelTest {
             one(listener).tableChanged(with(aChangeInRow(0)));
         }});
 
-        model.addSniper(joining);
+        model.addSniperShapshot(joining);
         model.sniperStateChanged(bidding);
 
         assertRowMatchesSnapshot(0, bidding);
@@ -70,7 +70,7 @@ public class SniperTableModelTest {
 
         assertEquals(0, model.getRowCount());
 
-        model.addSniper(joining); //Snapshot 추가하고
+        model.addSniperShapshot(joining); //Snapshot 추가하고
 
         assertEquals(1, model.getRowCount()); //테이블에 추가되었는지 갯수 확인
         assertRowMatchesSnapshot(0, joining); //추가된 스탭샷이 조인인지 확인한다.
@@ -82,8 +82,8 @@ public class SniperTableModelTest {
             ignoring(listener);
         }});
 
-        model.addSniper(SniperSnapshot.joining("item 0"));
-        model.addSniper(SniperSnapshot.joining("item 1"));
+        model.addSniperShapshot(SniperSnapshot.joining("item 0"));
+        model.addSniperShapshot(SniperSnapshot.joining("item 1"));
 
         assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER));
         assertEquals("item 1", cellValue(1, Column.ITEM_IDENTIFIER));
