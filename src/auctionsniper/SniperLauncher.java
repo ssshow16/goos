@@ -8,25 +8,35 @@ import java.util.List;
  */
 public class SniperLauncher implements UserRequestListener {
 
-    private SniperTableModel snipers;
     private AuctionHouse auctionHouse;
-    private List<Auction> notToBeGCd = new ArrayList<Auction>();
+    private SniperCollector collector;
 
-    public SniperLauncher(AuctionHouse auctionHouse, SniperTableModel snipers){
+//    private List<Auction> notToBeGCd = new ArrayList<Auction>();
+//    private SniperTableModel snipers;
+
+//    public SniperLauncher(AuctionHouse auctionHouse, SniperTableModel snipers){
+    public SniperLauncher(AuctionHouse auctionHouse, SniperCollector collector){
         this.auctionHouse = auctionHouse;
-        this.snipers = snipers;
+//        this.snipers = snipers;
+        this.collector = collector;
     }
 
     public void joinAuction(String itemId) {
 
-        snipers.addSniper(SniperSnapshot.joining(itemId));
+//        snipers.addSniper(SniperSnapshot.joining(itemId));
 
         Auction auction = auctionHouse.auctionFor(itemId);
-        notToBeGCd.add(auction);
-
-        auction.addAuctionEventListener(
-                new AuctionSniper(itemId, auction,
-                        new SwingThreadSniperListener(snipers)));
+        AuctionSniper sniper = new AuctionSniper(itemId, auction, new SniperListener() {
+            public void sniperStateChanged(SniperSnapshot sniperSnapshot) {
+                //TODO?
+            }
+        });
+        auction.addAuctionEventListener(sniper);
+        collector.addSniper(sniper);
+//        notToBeGCd.add(auction);
+//        auction.addAuctionEventListener(
+//                new AuctionSniper(itemId, auction,
+//                        new SwingThreadSniperListener(snipers)));
         auction.join();
     }
 }
