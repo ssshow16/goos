@@ -1,31 +1,21 @@
 package auctionsniper;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by a1000107 on 2022/04/01.
- */
 public class SniperLauncher implements UserRequestListener {
 
     private AuctionHouse auctionHouse;
     private SniperCollector collector;
 
-
-//    private SniperTableModel snipers;
-
-//    public SniperLauncher(AuctionHouse auctionHouse, SniperTableModel snipers){
-    public SniperLauncher(AuctionHouse auctionHouse, SniperCollector collector){
+    public SniperLauncher(AuctionHouse auctionHouse, SniperCollector collector){ //SniperPortfolio. SniperCollector 구현채
         this.auctionHouse = auctionHouse;
-//        this.snipers = snipers;
         this.collector = collector;
     }
 
     public void joinAuction(String itemId) {
+        //옥션에 참여할때 마다 Auction / Sniper 생성하여 연결,
         Auction auction = auctionHouse.auctionFor(itemId);
         AuctionSniper sniper = new AuctionSniper(itemId, auction);
         auction.addAuctionEventListener(sniper);
-        collector.addSniper(sniper);
+        collector.addSniper(sniper); //Collector에 저장관리한다.
         auction.join();
     }
 }
