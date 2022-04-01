@@ -67,31 +67,7 @@ public class Main {
     }
 
     private void addUserRequestListenerFor(final AuctionHouse auctionHouse) {
-        ui.addUserRequestListener(new UserRequestListener() {
-            public void joinAuction(String itemId) {
-
-                snipers.addSniper(SniperSnapshot.joining(itemId));
-
-//                Auction auction = new XMPPAuction(connection, itemId);
-                Auction auction = auctionHouse.auctionFor(itemId);
-                notToBeGCd.add(auction);
-
-                auction.addAuctionEventListener(
-                        new AuctionSniper(itemId, auction,
-                                new SwingThreadSniperListener(snipers)));
-                auction.join();
-            }
-        });
-    }
-
-    private void safelyAddItemToModel(final String itemId) throws Exception{
-        SwingUtilities.invokeAndWait(
-                new Runnable() {
-                    public void run() {
-                        snipers.addSniper(SniperSnapshot.joining(itemId));
-                    }
-                }
-        );
+        ui.addUserRequestListener(new SniperLauncher(auctionHouse, snipers));
     }
 
     private void disconnectWhenUICloses(final XMPPAuctionHouse auctionHouse) {
@@ -102,17 +78,4 @@ public class Main {
             }
         });
     }
-
-    public class SwingThreadSniperListener implements SniperListener{
-
-        SniperTableModel snipers;
-
-        public SwingThreadSniperListener(SniperTableModel snipers){
-            this.snipers = snipers;
-        }
-        public void sniperStateChanged(final SniperSnapshot snapshot) {
-            snipers.sniperStateChanged(snapshot);
-        }
-    }
-
 }
